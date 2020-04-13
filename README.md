@@ -24,12 +24,12 @@ Copy YouDownUI.exe to a folder, together with youtube-dl.exe application (https:
 
 ## First Steps
 Execute YouDownUI.exe to start it.
-The first step it is recomended to set the output path and filters.
+The first step it is recomended to set the output path and filters. Press **Settings...** (Alt+S) and specify:
 ![Alt YouDownUI](/documents/img/screenshot3.png)
-Press **Settings...** (Alt+S) and specify:
   * Output Directory: directory where downloaded videos are saved.
   * Default Filters: filters which appears as a dropdown option when a new link is added.
   * Preprocess youtube links: parse youtube links and remove all arguments but leave only the video.  
+  
 Press **Ok** to save the new settings.
 
 To download a video press **Add...** (Alt+A) and enter the video link and specify desired format.
@@ -39,8 +39,9 @@ Press **Ok** to confirm. The link is added to the queue.
 Press **Download** to start downloading the first (top) video from queue.
 After a video is successfully downloaded, its link is removed from queue and the next link starts automatically to be downloaded.
 
-During the process of downloading videos (**Download** button is activated). The other functions (**List Formats** and **Update**) are disabled.
+During the process of downloading videos (**Download** button is active/checked). The other functions (**List Formats** and **Update**) are disabled.
 To activate them, press again **Download** (deactivates downloading) and wait until currently downloaded video finishes.
+After this **List Formats** and **Update** become active and can be executed.
 
 ## Author
 
