@@ -240,14 +240,17 @@ void Queue::clear()
 //******************************************************************************
 // Load file to Queue
 //******************************************************************************
-void Queue::load()
+bool Queue::load(QString filename)
 {
     // clear old content
     clear();
 
-    QFile file("queue.txt");
+    if(filename.isEmpty())
+        filename = "queue.txt";
+
+    QFile file(filename);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
+        return false;
 
     Element element;
 
@@ -258,18 +261,22 @@ void Queue::load()
         element.extra = in.readLine();
         add(element);
     }
+    return true;
 }
 
 //******************************************************************************
 // Save Queue to file
 //******************************************************************************
-void Queue::save()
+bool Queue::save(QString filename)
 {
     QTableWidgetItem * ptrItem;
 
-    QFile file("queue.txt");
+    if(filename.isEmpty())
+        filename = "queue.txt";
+
+    QFile file(filename);
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        return;
+        return false;
 
     QTextStream out(&file);
 
@@ -284,7 +291,7 @@ void Queue::save()
             }
         }
     }
-
+    return true;
 }
 
 //******************************************************************************

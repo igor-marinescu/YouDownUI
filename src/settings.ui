@@ -17,17 +17,58 @@
    <item>
     <widget class="QLabel" name="lblOutputDir">
      <property name="text">
-      <string>Output Directory:</string>
+      <string>Output &amp;Directory:</string>
+     </property>
+     <property name="buddy">
+      <cstring>edtOutputDir</cstring>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="edtOutputDir"/>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLineEdit" name="edtOutputDir"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnBrowseOutput">
+       <property name="text">
+        <string>Browse...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Download &amp;Queue filename and location:</string>
+     </property>
+     <property name="buddy">
+      <cstring>edtQueueFileDir</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLineEdit" name="edtQueueFileDir"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnBrowseQueue">
+       <property name="text">
+        <string>Browse...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Default Formats:</string>
+      <string>Default &amp;Formats:</string>
+     </property>
+     <property name="buddy">
+      <cstring>txtDefFormats</cstring>
      </property>
     </widget>
    </item>
@@ -37,22 +78,9 @@
    <item>
     <widget class="QCheckBox" name="chkboxPreprocessLinks">
      <property name="text">
-      <string>Preprocess youtube links (leave only v=.... arguments)</string>
+      <string>&amp;Preprocess youtube links (leave only v=.... arguments)</string>
      </property>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -66,6 +94,15 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>edtOutputDir</tabstop>
+  <tabstop>btnBrowseOutput</tabstop>
+  <tabstop>edtQueueFileDir</tabstop>
+  <tabstop>btnBrowseQueue</tabstop>
+  <tabstop>txtDefFormats</tabstop>
+  <tabstop>chkboxPreprocessLinks</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

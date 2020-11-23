@@ -45,6 +45,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //--------------------------------------------------------------------------
     // Output Directory
     settingsData.outDir = appInterface->confFile.get_qstr("Settings", "OutputDir");
+    // Queue File/Dir
+    settingsData.queueFileDir = appInterface->confFile.get_qstr("Settings", "QueueFileDir");
     // Default Filters
     char defFilterName[32] = "DefFilter_";
     QString defFilterVal;
@@ -68,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Queue
     queue.assignTab(ui->tableWidget);
     queue.resizeTab(width());
-    queue.load();
+    queue.load(settingsData.queueFileDir);
 
     elLastDownFlag = false;
 
@@ -82,7 +84,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //******************************************************************************
 MainWindow::~MainWindow()
 {
-    queue.save();
+    queue.save(settingsData.queueFileDir);
     queue.releaseTab();
 
     //--------------------------------------------------------------------------
@@ -90,6 +92,8 @@ MainWindow::~MainWindow()
     //--------------------------------------------------------------------------
     // Output Directory
     appInterface->confFile.set_qstr("Settings", "OutputDir", settingsData.outDir);
+    // Queue File/Dir
+    appInterface->confFile.set_qstr("Settings", "QueueFileDir", settingsData.queueFileDir);
     // Default Filters
     char defFilterName[32] = "DefFilter_";
     char defFilterIdx = 'A';

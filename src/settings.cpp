@@ -23,6 +23,7 @@
 //******************************************************************************
 #include "settings.h"
 #include "ui_settings.h"
+#include "QFileDialog"
 
 //******************************************************************************
 Settings::Settings(QWidget *parent, SettingsData * settingsData) :
@@ -35,6 +36,7 @@ Settings::Settings(QWidget *parent, SettingsData * settingsData) :
     settingsDataPtr = settingsData;
     if(settingsDataPtr != nullptr){
         ui->edtOutputDir->setText(settingsDataPtr->outDir);
+        ui->edtQueueFileDir->setText(settingsDataPtr->queueFileDir);
         for(int i = 0; i < settingsDataPtr->defFormats.size(); ++i)
             ui->txtDefFormats->append(settingsDataPtr->defFormats.at(i));
         ui->chkboxPreprocessLinks->setChecked(settingsDataPtr->preprocessLink);
@@ -52,7 +54,43 @@ void Settings::on_buttonBox_accepted()
 {
     if(settingsDataPtr != nullptr){
         settingsDataPtr->outDir = ui->edtOutputDir->text();
+        settingsDataPtr->queueFileDir = ui->edtQueueFileDir->text();
         settingsDataPtr->defFormats = ui->txtDefFormats->toPlainText().split('\n');
         settingsDataPtr->preprocessLink = ui->chkboxPreprocessLinks->isChecked();
+    }
+}
+
+//******************************************************************************
+void Settings::on_btnBrowseQueue_clicked()
+{
+    QFileDialog dialog(this,
+                        "Queue File",
+                       settingsDataPtr->queueFileDir,
+                       "Any File (*.*)");
+
+    //dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setAcceptMode(QFileDialog::AcceptOpen);
+
+    if(dialog.exec()){
+        QStringList fileNames = dialog.selectedFiles();
+        settingsDataPtr->queueFileDir = fileNames[0];
+        ui->edtQueueFileDir->setText(settingsDataPtr->queueFileDir);
+    }
+}
+
+//******************************************************************************
+void Settings::on_btnBrowseOutput_clicked()
+{
+    QFileDialog dialog(this,
+                        "Output Directory",
+                       settingsDataPtr->outDir);
+
+    dialog.setFileMode(QFileDialog::Directory);
+    dialog.setAcceptMode(QFileDialog::AcceptOpen);
+
+    if(dialog.exec()){
+        QStringList fileNames = dialog.selectedFiles();
+        settingsDataPtr->outDir = fileNames[0];
+        ui->edtOutputDir->setText(settingsDataPtr->outDir);
     }
 }

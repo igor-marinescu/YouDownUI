@@ -54,8 +54,8 @@ public:
     bool del(int idx);
     void clear();
 
-    void load();
-    void save();
+    bool load(QString filename);
+    bool save(QString filename);
 
     static bool elementsEqual(const Element & el1, const Element & el2);
     static QString strElement(const Element * ptrElement);

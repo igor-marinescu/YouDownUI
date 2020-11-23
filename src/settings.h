@@ -39,6 +39,7 @@ public:
 
     typedef struct {
         QString outDir;
+        QString queueFileDir;
         QStringList defFormats;
         bool preprocessLink;
     }  SettingsData;
@@ -49,6 +50,10 @@ public:
 
 private slots:
     void on_buttonBox_accepted();
+
+    void on_btnBrowseQueue_clicked();
+
+    void on_btnBrowseOutput_clicked();
 
 private:
     Ui::Settings *ui;
