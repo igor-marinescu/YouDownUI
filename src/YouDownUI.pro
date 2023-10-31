@@ -27,8 +27,6 @@ SOURCES += main.cpp\
     yprocess.cpp
 
 HEADERS  += mainwindow.h \
-    dfu.h \
-    debug_cout.h \
     settings.h \
     ConfFile.h \
     AppInterface.h \

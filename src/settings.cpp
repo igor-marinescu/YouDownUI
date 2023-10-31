@@ -35,6 +35,8 @@ Settings::Settings(QWidget *parent, SettingsData * settingsData) :
 
     settingsDataPtr = settingsData;
     if(settingsDataPtr != nullptr){
+
+        ui->edtDownloaderExe->setText(settingsDataPtr->downloaderExe);
         ui->edtOutputDir->setText(settingsDataPtr->outDir);
         ui->edtQueueFileDir->setText(settingsDataPtr->queueFileDir);
         for(int i = 0; i < settingsDataPtr->defFormats.size(); ++i)
@@ -53,6 +55,7 @@ Settings::~Settings()
 void Settings::on_buttonBox_accepted()
 {
     if(settingsDataPtr != nullptr){
+        settingsDataPtr->downloaderExe = ui->edtDownloaderExe->text();
         settingsDataPtr->outDir = ui->edtOutputDir->text();
         settingsDataPtr->queueFileDir = ui->edtQueueFileDir->text();
         settingsDataPtr->defFormats = ui->txtDefFormats->toPlainText().split('\n');
@@ -73,8 +76,7 @@ void Settings::on_btnBrowseQueue_clicked()
 
     if(dialog.exec()){
         QStringList fileNames = dialog.selectedFiles();
-        settingsDataPtr->queueFileDir = fileNames[0];
-        ui->edtQueueFileDir->setText(settingsDataPtr->queueFileDir);
+        ui->edtQueueFileDir->setText(fileNames[0]);
     }
 }
 
@@ -90,7 +92,23 @@ void Settings::on_btnBrowseOutput_clicked()
 
     if(dialog.exec()){
         QStringList fileNames = dialog.selectedFiles();
-        settingsDataPtr->outDir = fileNames[0];
-        ui->edtOutputDir->setText(settingsDataPtr->outDir);
+        ui->edtOutputDir->setText(fileNames[0]);
+    }
+}
+
+//******************************************************************************
+void Settings::on_btnDownloaderExe_clicked()
+{
+    QFileDialog dialog(this,
+                        "Executable File",
+                       settingsDataPtr->downloaderExe,
+                       "Exe File (*.exe)");
+
+    dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setAcceptMode(QFileDialog::AcceptOpen);
+
+    if(dialog.exec()){
+        QStringList fileNames = dialog.selectedFiles();
+        ui->edtDownloaderExe->setText(fileNames[0]);
     }
 }

@@ -1,12 +1,17 @@
 # YouDownUI
-Graphical User Interface for youtube-dl (ytdl-org)
+Graphical User Interface for downloading online videos using 3rd party command line tools (yt-dlp, youtube-dl, etc.)
 ![Alt YouDownUI](/documents/img/screenshot1.png)
+
+## Releases
+  - 31.10.2023 YouDownUI 1.1 (MD5 Checksum: 4f22a82a779fa507bca989862e912bc7 *YouDownUI.exe)
+	- Added possibiliy to specify the downloadeder tool (not hardcoded anymore).
+	- Added possibilty to download only Audio.
 
 ## What is YouDownUI
 YouDownUI helps you easily, using mouse or keyboard-shortcuts, to download videos from online platforms.
-It is a graphical User Interface (made in Qt) which calls in background the youtube-dl.exe application.
+It is a graphical User Interface (made in Qt) which calls in background a downloader (yt-dlp, youtube-dl, etc.) tool.
 
-You don't have to manually start the command line and invoke youtube-dl with desired arguments. 
+You don't have to manually start the command line and invoke the downloader tool with desired arguments. 
 YouDownUI does it for you.
 
 A very intuitive User Interface allows you to:
@@ -14,12 +19,12 @@ A very intuitive User Interface allows you to:
   * add links to a queue to be automatically downloaded one after another.
   * edit and store the queue of links permanently. A link is removed from queue once it is successfully downloaded. 
   * query available formats for a video/audio link.
-  * update youtube-dl application.
+  * update the downloader tool application.
   * generate a log file locally with all activities.
 
 ## Installing
 YouDownUI doesn't need to be installed.
-Copy YouDownUI.exe to a folder, together with youtube-dl.exe application (https://github.com/ytdl-org/youtube-dl).
+Copy YouDownUI.exe to a folder, specify in Settings the downloader tool to use (must be downloader separatelly).
 ![Alt YouDownUI](/documents/img/screenshot2.png)
 
 ## First Steps

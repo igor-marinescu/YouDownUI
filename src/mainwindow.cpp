@@ -43,6 +43,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //--------------------------------------------------------------------------
     // Load settings
     //--------------------------------------------------------------------------
+    // Downloader Executable
+    settingsData.downloaderExe = appInterface->confFile.get_qstr("Settings", "DownloaderExe");
     // Output Directory
     settingsData.outDir = appInterface->confFile.get_qstr("Settings", "OutputDir");
     // Queue File/Dir
@@ -90,6 +92,8 @@ MainWindow::~MainWindow()
     //--------------------------------------------------------------------------
     // Save settings
     //--------------------------------------------------------------------------
+    // Downloader Executable
+    appInterface->confFile.set_qstr("Settings", "DownloaderExe", settingsData.downloaderExe);
     // Output Directory
     appInterface->confFile.set_qstr("Settings", "OutputDir", settingsData.outDir);
     // Queue File/Dir
@@ -234,7 +238,11 @@ bool MainWindow::execute(const QStringList & arguments, const QString & txt, Err
     }
 
     // Try to start the process
-    if(!dfu.execProcess("youtube-dl.exe", arguments))
+    if(settingsData.downloaderExe.isEmpty())
+    {
+        return setError("Downloader executable not defined", "", error);
+    }
+    if(!dfu.execProcess(settingsData.downloaderExe, arguments))
     {
         return setError("Can not start process", "", error);
     }
@@ -257,10 +265,19 @@ bool MainWindow::downloadNext(Error * error)
     // start building arguments
     QStringList arguments;
 
-    // add format?
-    if(!elLastDown.format.isEmpty())
+    // Video?
+    if(!elLastDown.audio)
     {
-        arguments << "-f" << elLastDown.format;
+        // add format?
+        if(!elLastDown.format.isEmpty())
+        {
+            arguments << "-f" << elLastDown.format;
+        }
+    }
+    // Audio?
+    else{
+        // add arguments
+        arguments << "--extract-audio" << "--audio-format" << "mp3";
     }
 
     // add destination path?
@@ -309,6 +326,7 @@ void MainWindow::on_btnDownload_clicked()
 void MainWindow::on_btnAdd_clicked()
 {
     Queue::Element element;
+    element.audio = false;
     AddEdit add(this, &settingsData, &element);
 
     add.setModal(true);

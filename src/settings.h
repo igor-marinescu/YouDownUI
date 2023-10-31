@@ -38,6 +38,7 @@ class Settings : public QDialog
 public:
 
     typedef struct {
+        QString downloaderExe;
         QString outDir;
         QString queueFileDir;
         QStringList defFormats;
@@ -49,11 +50,11 @@ public:
     ~Settings();
 
 private slots:
+
     void on_buttonBox_accepted();
-
     void on_btnBrowseQueue_clicked();
-
     void on_btnBrowseOutput_clicked();
+    void on_btnDownloaderExe_clicked();
 
 private:
     Ui::Settings *ui;

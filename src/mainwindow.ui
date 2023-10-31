@@ -67,10 +67,15 @@
       </attribute>
       <column>
        <property name="text">
-        <string>Link</string>
+        <string>Type</string>
        </property>
        <property name="textAlignment">
-        <set>AlignLeft|AlignVCenter</set>
+        <set>AlignLeading|AlignVCenter</set>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Link</string>
        </property>
       </column>
       <column>
@@ -78,7 +83,7 @@
         <string>Format</string>
        </property>
        <property name="textAlignment">
-        <set>AlignLeft|AlignVCenter</set>
+        <set>AlignLeading|AlignVCenter</set>
        </property>
       </column>
       <column>
@@ -86,7 +91,7 @@
         <string>Extra</string>
        </property>
        <property name="textAlignment">
-        <set>AlignLeft|AlignVCenter</set>
+        <set>AlignLeading|AlignVCenter</set>
        </property>
       </column>
      </widget>
@@ -187,12 +192,15 @@
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>btnAdd</tabstop>
+  <tabstop>btnDownload</tabstop>
+  <tabstop>btnEdit</tabstop>
   <tabstop>btnRemove</tabstop>
   <tabstop>btnClear</tabstop>
   <tabstop>btnListFormats</tabstop>
   <tabstop>btnUpdate</tabstop>
   <tabstop>btnSettings</tabstop>
   <tabstop>out</tabstop>
+  <tabstop>tableWidget</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -25,6 +25,9 @@
 #include <QFile>
 #include <QTextStream>
 
+#define QSTR_AUDIO  QString("Audio")
+#define QSTR_VIDEO  QString("Video")
+
 //******************************************************************************
 // Constructor
 //******************************************************************************
@@ -65,9 +68,10 @@ void Queue::resizeTab(int width)
     if(tab == nullptr)
         return;
 
-    tab->setColumnWidth(0, width * 0.50);  // Link
-    tab->setColumnWidth(1, width * 0.35);  // Format
-    tab->setColumnWidth(2, width * 0.10);  // Extra
+    tab->setColumnWidth(0, width * 0.05);  // Video/Adio
+    tab->setColumnWidth(1, width * 0.50);  // Link
+    tab->setColumnWidth(2, width * 0.35);  // Format
+    tab->setColumnWidth(3, width * 0.05);  // Extra
 }
 
 //******************************************************************************
@@ -86,15 +90,22 @@ bool Queue::add(const Element & element){
 
     // add element to table
     tab->setRowCount(rowCount + 1);
+    // video/audio
+    ptrItem = new QTableWidgetItem(element.audio ? QSTR_AUDIO : QSTR_VIDEO);
+    ptrItem->setFlags(ptrItem->flags() & ~Qt::ItemIsEditable);
+    tab->setItem(rowCount, 0, ptrItem);
     // link
     ptrItem = new QTableWidgetItem(element.link);
-    tab->setItem(rowCount, 0, ptrItem);
+    ptrItem->setFlags(ptrItem->flags() & ~Qt::ItemIsEditable);
+    tab->setItem(rowCount, 1, ptrItem);
     // format
     ptrItem = new QTableWidgetItem(element.format);
-    tab->setItem(rowCount, 1, ptrItem);
+    ptrItem->setFlags(ptrItem->flags() & ~Qt::ItemIsEditable);
+    tab->setItem(rowCount, 2, ptrItem);
     // extra
     ptrItem = new QTableWidgetItem(element.extra);
-    tab->setItem(rowCount, 2, ptrItem);
+    ptrItem->setFlags(ptrItem->flags() & ~Qt::ItemIsEditable);
+    tab->setItem(rowCount, 3, ptrItem);
 
     return true;
 }
@@ -108,7 +119,7 @@ bool Queue::add(const Element & element){
 bool Queue::get(int idx, Element * ptrElement)
 {
     QTableWidgetItem * ptrItem;
-    QString strLink, strFormat, strExtra;
+    QString strAudio, strLink, strFormat, strExtra;
 
     if(tab == nullptr)
         return false;
@@ -117,22 +128,28 @@ bool Queue::get(int idx, Element * ptrElement)
 
     if((idx >= 0) && (idx < rowCount))
     {
-        // get link
+        // get audio/video
         ptrItem = tab->item(idx, 0);
+        if(ptrItem != nullptr)
+            strAudio = ptrItem->text();
+
+        // get link
+        ptrItem = tab->item(idx, 1);
         if(ptrItem != nullptr)
             strLink = ptrItem->text();
 
         // get format
-        ptrItem = tab->item(idx, 1);
+        ptrItem = tab->item(idx, 2);
         if(ptrItem != nullptr)
             strFormat = ptrItem->text();
 
         // get extra
-        ptrItem = tab->item(idx, 2);
+        ptrItem = tab->item(idx, 3);
         if(ptrItem != nullptr)
             strExtra = ptrItem->text();
 
         // copy to element
+        ptrElement->audio = (strAudio == QSTR_AUDIO);
         ptrElement->link = strLink;
         ptrElement->format = strFormat;
         ptrElement->extra = strExtra;
@@ -165,19 +182,26 @@ bool Queue::edit(int idx, const Element & element)
         // get link
         ptrItem = tab->item(idx, 0);
         if(ptrItem != nullptr)
+            ptrItem->setText(element.audio ? QSTR_AUDIO : QSTR_VIDEO);
+        else
+            return false;
+
+        // get link
+        ptrItem = tab->item(idx, 1);
+        if(ptrItem != nullptr)
             ptrItem->setText(element.link);
         else
             return false;
 
         // get format
-        ptrItem = tab->item(idx, 1);
+        ptrItem = tab->item(idx, 2);
         if(ptrItem != nullptr)
             ptrItem->setText(element.format);
         else
             return false;
 
         // get extra
-        ptrItem = tab->item(idx, 2);
+        ptrItem = tab->item(idx, 3);
         if(ptrItem != nullptr)
             ptrItem->setText(element.extra);
         else
@@ -242,6 +266,8 @@ void Queue::clear()
 //******************************************************************************
 bool Queue::load(QString filename)
 {
+    QString strAudio;
+
     // clear old content
     clear();
 
@@ -256,7 +282,22 @@ bool Queue::load(QString filename)
 
     QTextStream in(&file);
     while(!in.atEnd()){
-        element.link = in.readLine();
+        strAudio = in.readLine();
+        if(strAudio == QSTR_AUDIO){
+            element.audio = true;
+            element.link = in.readLine();
+        }
+        else if(strAudio == QSTR_VIDEO){
+            element.audio = false;
+            element.link = in.readLine();
+        }
+        else{
+            element.audio = false;
+            // Audio field is invalid, it doesn't contain eather "Audio" or "Video"
+            // mots probablly this is an old file (where Audio was not present)
+            // in this case treat Audio as Link
+            element.link = strAudio;
+        }
         element.format = in.readLine();
         element.extra = in.readLine();
         add(element);
@@ -299,7 +340,7 @@ bool Queue::save(QString filename)
 //******************************************************************************
 bool Queue::elementsEqual(const Element & el1, const Element & el2)
 {
-    return ((el1.link == el2.link) && (el1.format == el2.format) && (el1.link == el2.link));
+    return ((el1.audio == el2.audio) && (el1.link == el2.link) && (el1.format == el2.format) && (el1.link == el2.link));
 }
 
 //******************************************************************************
@@ -308,7 +349,8 @@ bool Queue::elementsEqual(const Element & el1, const Element & el2)
 QString Queue::strElement(const Element * ptrElement){
     if(ptrElement != nullptr)
     {
-        return (ptrElement->link + " | " + ptrElement->format + " | " + ptrElement->extra);
+        return ((ptrElement->audio ? QSTR_AUDIO : QSTR_VIDEO) + " | "
+                + ptrElement->link + " | " + ptrElement->format + " | " + ptrElement->extra);
     }
     return QString("nullptr");
 }

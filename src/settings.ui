@@ -6,14 +6,35 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>423</width>
-    <height>342</height>
+    <width>463</width>
+    <height>440</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Downloader executable:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLineEdit" name="edtDownloaderExe"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnDownloaderExe">
+       <property name="text">
+        <string>Browse...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item>
     <widget class="QLabel" name="lblOutputDir">
      <property name="text">
@@ -39,7 +60,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="lblDownQueue">
      <property name="text">
       <string>Download &amp;Queue filename and location:</string>
      </property>
@@ -63,7 +84,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="lblDownFormats">
      <property name="text">
       <string>Default &amp;Formats:</string>
      </property>
@@ -95,13 +116,14 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>edtDownloaderExe</tabstop>
+  <tabstop>btnDownloaderExe</tabstop>
   <tabstop>edtOutputDir</tabstop>
   <tabstop>btnBrowseOutput</tabstop>
   <tabstop>edtQueueFileDir</tabstop>
   <tabstop>btnBrowseQueue</tabstop>
   <tabstop>txtDefFormats</tabstop>
   <tabstop>chkboxPreprocessLinks</tabstop>
-  <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -112,8 +134,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>257</x>
-     <y>332</y>
+     <x>266</x>
+     <y>430</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -128,8 +150,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>325</x>
-     <y>332</y>
+     <x>334</x>
+     <y>430</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

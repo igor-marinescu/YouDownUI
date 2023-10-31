@@ -39,6 +39,7 @@ public:
         QString link;
         QString format;
         QString extra;
+        bool audio;
     } Element;
 
     Queue();
