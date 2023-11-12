@@ -39,13 +39,12 @@ class AddEdit : public QDialog
     bool in_constructor;
 
 public:
-    explicit AddEdit(QWidget *parent, Settings::SettingsData * settings, Queue::Element * element);
+    explicit AddEdit(QWidget *parent, Settings::SettingsData * settings,
+                     Queue::Element * element);
     ~AddEdit();
 
 private slots:
     void on_buttonBox_accepted();
-    void on_radioBtnVideo_toggled(bool checked);
-    void on_radioBtnAudio_toggled(bool checked);
 
 private:
     Ui::AddEdit *ui;

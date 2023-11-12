@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>401</width>
-    <height>158</height>
+    <height>175</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,40 +15,9 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QRadioButton" name="radioBtnVideo">
-       <property name="text">
-        <string>Video</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="radioBtnAudio">
-       <property name="text">
-        <string>Audio</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item>
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="lblLink">
        <property name="text">
         <string>&amp;Link:</string>
        </property>
@@ -61,7 +30,7 @@
       <widget class="QLineEdit" name="edtLink"/>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="lblFormat">
        <property name="text">
         <string>&amp;Format:</string>
        </property>
@@ -74,7 +43,7 @@
       <widget class="QComboBox" name="cmbboxFormat"/>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
+      <widget class="QLabel" name="lblExtra">
        <property name="text">
         <string>&amp;Extra:</string>
        </property>
@@ -113,6 +82,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>edtLink</tabstop>
+  <tabstop>cmbboxFormat</tabstop>
+  <tabstop>edtExtra</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

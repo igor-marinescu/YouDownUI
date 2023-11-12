@@ -34,21 +34,21 @@ MainWindow::MainWindow(QWidget *parent) :
     appInterface = new AppInterface("config.cfg", this);
     appInterface->loadWidgetGeometry(this, "WinPos");
 
-    //--------------------------------------------------------------------------
     // Connect signals
-    //--------------------------------------------------------------------------
     connect(&dfu, SIGNAL(sigFinished(int)), this, SLOT(dfu_finished(int)));
     dfu.output = ui->out;
 
-    //--------------------------------------------------------------------------
     // Load settings
-    //--------------------------------------------------------------------------
+
     // Downloader Executable
     settingsData.downloaderExe = appInterface->confFile.get_qstr("Settings", "DownloaderExe");
+
     // Output Directory
     settingsData.outDir = appInterface->confFile.get_qstr("Settings", "OutputDir");
+
     // Queue File/Dir
     settingsData.queueFileDir = appInterface->confFile.get_qstr("Settings", "QueueFileDir");
+
     // Default Filters
     char defFilterName[32] = "DefFilter_";
     QString defFilterVal;
@@ -60,6 +60,7 @@ MainWindow::MainWindow(QWidget *parent) :
             settingsData.defFormats << defFilterVal;
         }
     }
+
     // Preprocess Links
     settingsData.preprocessLink = (appInterface->confFile.get("Settings", "PreprocessLinks") != 0 ? true : false);
 
@@ -89,15 +90,17 @@ MainWindow::~MainWindow()
     queue.save(settingsData.queueFileDir);
     queue.releaseTab();
 
-    //--------------------------------------------------------------------------
     // Save settings
-    //--------------------------------------------------------------------------
+
     // Downloader Executable
     appInterface->confFile.set_qstr("Settings", "DownloaderExe", settingsData.downloaderExe);
+
     // Output Directory
     appInterface->confFile.set_qstr("Settings", "OutputDir", settingsData.outDir);
+
     // Queue File/Dir
     appInterface->confFile.set_qstr("Settings", "QueueFileDir", settingsData.queueFileDir);
+
     // Default Filters
     char defFilterName[32] = "DefFilter_";
     char defFilterIdx = 'A';
@@ -133,6 +136,7 @@ MainWindow::~MainWindow()
 //******************************************************************************
 void MainWindow::enableElements(bool state)
 {
+    ui->btnDownload->setEnabled(state);
     ui->btnUpdate->setEnabled(state);
     ui->btnListFormats->setEnabled(state);
 }
@@ -145,14 +149,8 @@ void MainWindow::out(const QString & txt)
 }
 
 //******************************************************************************
-bool MainWindow::setError(const QString & text, const QString & textExt, Error * err)
+bool MainWindow::showError(const QString & text, const QString & textExt)
 {
-    if(err != nullptr)
-    {
-        err->code = -1;
-        err->text = text;
-        err->textExt = textExt;
-    }
     out("[Error] " + text + " " + textExt);
     AppInterface::MsgErr(text, textExt);
     return false;
@@ -185,70 +183,56 @@ void MainWindow::dfu_finished(int exitCode)
 {
     out("Process finished (" + QString::number(exitCode) + ")");
     out("--------------------------------------------------------------------");
-    enableElements(true);
 
-    // in case if the process failed
+    // In case if the process failed
     if(exitCode != 0)
     {
-        // uncheck download button, do not start automatically downloading next
-        ui->btnDownload->setChecked(false);
         elLastDownFlag = false;
-
-        setError("Process finished with error: " + QString::number(exitCode),
-                 "Check logs, correct data and try again");
+        showError("Process finished with error: " + QString::number(exitCode),
+                  "Check logs, correct data and try again");
+        enableElements(true);
+        return;
     }
 
-    // in case if this process is finished for downloading an element
-    // remove it from list
-    if(elLastDownFlag){
+    // In case if this process is finished for downloading an element
+    if(elLastDownFlag)
+    {
         elLastDownFlag = false;
         // remove it from queue
         Queue::Element element;
-        if(queue.get(0, &element)){
+        if(queue.get(0, &element))
+        {
             // it is the same element we just downloaded?
             if(Queue::elementsEqual(element, elLastDown))
-            {
                 // remove it from queue
                 queue.del(0);
-            }
         }
-    }
-
-    // if download button checked, start downloading next element
-    if(ui->btnDownload->isChecked())
-    {
-        Error error;
-        ui->btnDownload->setChecked(downloadNext(&error));
+        // Start automatically downloading next link
+        enableElements(!downloadNext());
     }
 }
 
 //******************************************************************************
 // Execute Command
 //******************************************************************************
-bool MainWindow::execute(const QStringList & arguments, const QString & txt, Error * error)
+bool MainWindow::execute(const QStringList & arguments, const QString & txt)
 {
     out("");
     out("--------------------------------------------------------------------");
     out(txt);
 
     // Check if process is already running
-    if(dfu.flagStarted)
-    {
-        return setError("Process already running", "please wait...", error);
-    }
+    if(dfu.isBusy())
+        return showError("Process already running", "please wait...");
 
     // Try to start the process
     if(settingsData.downloaderExe.isEmpty())
-    {
-        return setError("Downloader executable not defined", "", error);
-    }
+        return showError("Downloader executable not defined", "");
+
     if(!dfu.execProcess(settingsData.downloaderExe, arguments))
-    {
-        return setError("Can not start process", "", error);
-    }
+        return showError("Can not start process", "");
 
     out("Process started, please wait...");
-    enableElements(false);
     return true;
 }
 
@@ -256,8 +240,11 @@ bool MainWindow::execute(const QStringList & arguments, const QString & txt, Err
 // Download Next from list
 // return true - if download started, else false
 //******************************************************************************
-bool MainWindow::downloadNext(Error * error)
+bool MainWindow::downloadNext()
 {
+    if(dfu.isBusy())
+        return false;
+
     // get top element from queue (if exist)
     if(!queue.get(0, &elLastDown))
         return false;
@@ -296,37 +283,18 @@ bool MainWindow::downloadNext(Error * error)
         out("Preprocessed link:" + strLink);
     }
     arguments << strLink;
-    elLastDownFlag = execute(arguments, ("Download: " + Queue::strElement(&elLastDown)), error);
+    elLastDownFlag = execute(arguments, ("Download: " + Queue::strElement(&elLastDown)));
 
     return elLastDownFlag;
 }
 
 //******************************************************************************
-// Download
-//******************************************************************************
-void MainWindow::on_btnDownload_clicked()
-{
-    // if download button checked
-    if(ui->btnDownload->isChecked())
-    {
-        // if not busy start downloading next from queue
-        if(!dfu.flagBusy)
-        {
-            Error error;
-            // start with dowloading next from list,
-            // uncheck button in case if list empty or error
-            ui->btnDownload->setChecked(downloadNext(&error));
-        }
-    }
-}
-
-//******************************************************************************
 // Add (add element to list)
 //******************************************************************************
-void MainWindow::on_btnAdd_clicked()
+void MainWindow::add(bool audio)
 {
     Queue::Element element;
-    element.audio = false;
+    element.audio = audio;
     AddEdit add(this, &settingsData, &element);
 
     add.setModal(true);
@@ -339,14 +307,40 @@ void MainWindow::on_btnAdd_clicked()
         {
             out("Added: " + Queue::strElement(&element));
 
-            //!!! todo: start automatically download next?
-            //on_btnDownload_clicked()
+            // start automatically downloading next
+            if(!dfu.isBusy())
+            {
+                enableElements(!downloadNext());
+            }
         }
         else
         {
-            setError("Cannot add element", "Inconsistent data");
+            showError("Cannot add element", "Inconsistent data");
         }
+    }
+}
 
+//******************************************************************************
+void MainWindow::on_btnAudio_clicked()
+{
+    add(true);
+}
+
+void MainWindow::on_btnVideo_clicked()
+{
+    add(false);
+}
+
+//******************************************************************************
+// Download
+//******************************************************************************
+void MainWindow::on_btnDownload_clicked()
+{
+    // if not busy start downloading next from queue
+    if(!dfu.isBusy())
+    {
+        // start with dowloading next from list,
+        enableElements(!downloadNext());
     }
 }
 
@@ -373,13 +367,13 @@ void MainWindow::on_btnEdit_clicked()
             }
             else
             {
-                setError("Cannot edit element", "Inconsistent data");
+                showError("Cannot edit element", "Inconsistent data");
             }
         }
     }
     else
     {
-        setError("Cannot edit element", "No element selected");
+        showError("Cannot edit element", "No element selected");
     }
 }
 
@@ -390,7 +384,7 @@ void MainWindow::on_btnRemove_clicked()
 {
     if(!queue.del(ui->tableWidget->currentRow()))
     {
-        setError("Cannot remove element", "No element selected");
+        showError("Cannot remove element", "No element selected");
     }
 }
 

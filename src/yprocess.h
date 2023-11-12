@@ -35,16 +35,18 @@
 class YProcess : public QProcess {
     Q_OBJECT
 
+    bool flagStarted;
+    bool flagFinished;
+    bool flagBusy;
+
 public:
 
     YProcess(QObject *parent = 0);
     ~YProcess();
 
     bool execProcess(const QString & cmd, const QStringList & args);
+    bool isBusy();
 
-    bool flagStarted;
-    bool flagFinished;
-    bool flagBusy;
     QTextEdit * output;
 
 signals:

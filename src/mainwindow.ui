@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>708</width>
+    <width>840</width>
     <height>655</height>
    </rect>
   </property>
@@ -70,7 +70,7 @@
         <string>Type</string>
        </property>
        <property name="textAlignment">
-        <set>AlignLeading|AlignVCenter</set>
+        <set>AlignLeft|AlignVCenter</set>
        </property>
       </column>
       <column>
@@ -83,7 +83,7 @@
         <string>Format</string>
        </property>
        <property name="textAlignment">
-        <set>AlignLeading|AlignVCenter</set>
+        <set>AlignLeft|AlignVCenter</set>
        </property>
       </column>
       <column>
@@ -91,7 +91,7 @@
         <string>Extra</string>
        </property>
        <property name="textAlignment">
-        <set>AlignLeading|AlignVCenter</set>
+        <set>AlignLeft|AlignVCenter</set>
        </property>
       </column>
      </widget>
@@ -99,19 +99,26 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
+       <widget class="QPushButton" name="btnAudio">
+        <property name="text">
+         <string>&amp;Audio</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnVideo">
+        <property name="text">
+         <string>&amp;Video</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="btnDownload">
         <property name="text">
          <string>&amp;Download</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnAdd">
-        <property name="text">
-         <string>&amp;Add...</string>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -159,14 +166,14 @@
       <item>
        <widget class="QPushButton" name="btnListFormats">
         <property name="text">
-         <string>List &amp;Formats (-F)</string>
+         <string>List &amp;Formats</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btnUpdate">
         <property name="text">
-         <string>&amp;Update (-U)</string>
+         <string>&amp;Update</string>
         </property>
        </widget>
       </item>
@@ -191,7 +198,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
-  <tabstop>btnAdd</tabstop>
   <tabstop>btnDownload</tabstop>
   <tabstop>btnEdit</tabstop>
   <tabstop>btnRemove</tabstop>

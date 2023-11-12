@@ -36,7 +36,7 @@
 // Version
 //******************************************************************************
 #define APP_MAME "YouDownUI"
-#define APP_VERS "1.1"
+#define APP_VERS "1.2"
 
 //******************************************************************************
 namespace Ui {
@@ -48,16 +48,6 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    class Error
-    {
-    public:
-        int code;
-        QString text;
-        QString textExt;
-
-        Error(){ code = 0; }
-    };
-
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -67,13 +57,12 @@ private slots:
     void on_btnListFormats_clicked();
     void on_btnSettings_clicked();
     void on_btnUpdate_clicked();
-
-    void on_btnAdd_clicked();
     void on_btnRemove_clicked();
-
     void on_btnClear_clicked();
     void on_btnEdit_clicked();
     void on_btnDownload_clicked();
+    void on_btnAudio_clicked();
+    void on_btnVideo_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -83,8 +72,8 @@ private:
     Settings::SettingsData settingsData;
 
     void out(const QString & txt);
-    bool execute(const QStringList & arguments, const QString & txt, Error * error = nullptr);
-    bool downloadNext(Error * error);
+    bool execute(const QStringList & arguments, const QString & txt);
+    bool downloadNext();
 
     void enableElements(bool state);
 
@@ -97,7 +86,9 @@ private:
     Queue::Element elLastDown;
     bool elLastDownFlag;
 
-    bool setError(const QString & text, const QString & textExt = "", Error * error = nullptr);
+    bool showError(const QString & text, const QString & textExt = "");
+
+    void add(bool audio);
 };
 
 //******************************************************************************
