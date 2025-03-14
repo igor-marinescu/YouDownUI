@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>463</width>
-    <height>440</height>
+    <height>441</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,10 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Downloader executable:</string>
+      <string>Downloader &amp;Executable:</string>
+     </property>
+     <property name="buddy">
+      <cstring>edtDownloaderExe</cstring>
      </property>
     </widget>
    </item>
@@ -100,6 +103,20 @@
     <widget class="QCheckBox" name="chkboxPreprocessLinks">
      <property name="text">
       <string>&amp;Preprocess youtube links (leave only v=.... arguments)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="chkboxAppendTimestamp">
+     <property name="text">
+      <string>Append &amp;Timestamp to the downloaded file (&lt;name&gt;-&lt;hhmmss_ddMMyy&gt;.&lt;ext&gt;)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="chkboxSetModifiedTime">
+     <property name="text">
+      <string>&amp;Set file modification date when file was uploaded (--mtime option)</string>
      </property>
     </widget>
    </item>

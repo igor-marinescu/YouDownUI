@@ -43,6 +43,8 @@ public:
         QString queueFileDir;
         QStringList defFormats;
         bool preprocessLink;
+        bool appendTimestamp;
+        bool setModifiedTime;
     }  SettingsData;
 
 

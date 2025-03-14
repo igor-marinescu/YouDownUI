@@ -18,6 +18,8 @@
 // Main Window
 //******************************************************************************
 
+#include <QDateTime>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "settings.h"
@@ -61,8 +63,9 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     }
 
-    // Preprocess Links
     settingsData.preprocessLink = (appInterface->confFile.get("Settings", "PreprocessLinks") != 0 ? true : false);
+    settingsData.appendTimestamp = (appInterface->confFile.get("Settings", "AppendTimestamp") != 0 ? true : false);
+    settingsData.setModifiedTime = (appInterface->confFile.get("Settings", "SetModifiedTime") != 0 ? true : false);
 
     // Background color for output
     QPalette p = ui->out->palette(); // define pallete for textEdit..
@@ -114,8 +117,10 @@ MainWindow::~MainWindow()
             defFilterIdx++;
         }
     }
-    // Preprocess Links
+
     appInterface->confFile.set("Settings", "PreprocessLinks", settingsData.preprocessLink ? true : false);
+    appInterface->confFile.set("Settings", "AppendTimestamp", settingsData.appendTimestamp ? true : false);
+    appInterface->confFile.set("Settings", "SetModifiedTime", settingsData.setModifiedTime ? true : false);
 
     // Clear old unused Default Filters
     for(; defFilterIdx < 'N'; defFilterIdx++){
@@ -263,17 +268,37 @@ bool MainWindow::downloadNext()
     }
     // Audio?
     else{
-        // add arguments
         arguments << "--extract-audio" << "--audio-format" << "mp3";
     }
 
+    // Set File Modification Time
+    if(settingsData.setModifiedTime)
+    {
+        arguments << "--mtime";
+    }    
+    else{
+        arguments << "--no-mtime";
+    }
+    
+    // Set output filename format "-o <filename>"
+    QString timestamp = "";
+    
+    if(settingsData.appendTimestamp)
+    {
+        QDateTime dateTime = QDateTime::currentDateTime();
+        timestamp = dateTime.toString("-hhmmss_ddMMyy");
+    }
+
+    QString output_filename = "%(title)s" + timestamp + ".%(ext)s";
+    
     // add destination path?
     if(!settingsData.outDir.isEmpty())
     {
-        QString outDir = settingsData.outDir + "\\%(title)s.%(ext)s";
-        arguments << "-o" << outDir;
+        output_filename = settingsData.outDir + "\\" + output_filename;
     }
 
+    arguments << "-o" << output_filename;
+    
     // add link
     // preprocess link?
     QString strLink = elLastDown.link;

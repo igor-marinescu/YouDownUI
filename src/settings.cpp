@@ -42,6 +42,8 @@ Settings::Settings(QWidget *parent, SettingsData * settingsData) :
         for(int i = 0; i < settingsDataPtr->defFormats.size(); ++i)
             ui->txtDefFormats->append(settingsDataPtr->defFormats.at(i));
         ui->chkboxPreprocessLinks->setChecked(settingsDataPtr->preprocessLink);
+        ui->chkboxAppendTimestamp->setChecked(settingsDataPtr->appendTimestamp);
+        ui->chkboxSetModifiedTime->setChecked(settingsDataPtr->setModifiedTime);
     }
 }
 
@@ -60,6 +62,8 @@ void Settings::on_buttonBox_accepted()
         settingsDataPtr->queueFileDir = ui->edtQueueFileDir->text();
         settingsDataPtr->defFormats = ui->txtDefFormats->toPlainText().split('\n');
         settingsDataPtr->preprocessLink = ui->chkboxPreprocessLinks->isChecked();
+        settingsDataPtr->appendTimestamp = ui->chkboxAppendTimestamp->isChecked();
+        settingsDataPtr->setModifiedTime = ui->chkboxSetModifiedTime->isChecked();
     }
 }
 

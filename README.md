@@ -6,8 +6,11 @@ Graphical User Interface for downloading online videos using 3rd party command l
   - 31.10.2023 YouDownUI 1.1 (MD5 Checksum: 4f22a82a779fa507bca989862e912bc7 *YouDownUI.exe)
 	- Added possibiliy to specify the downloadeder tool (not hardcoded anymore).
 	- Added possibilty to download only Audio.
-  - 12.11.2023 YouDownUI 1.1 (MD5 Checksum: 157e6ab3c1354032ca8b115689da47c0 *YouDownUI.exe)
+  - 12.11.2023 YouDownUI 1.2 (MD5 Checksum: 157e6ab3c1354032ca8b115689da47c0 *YouDownUI.exe)
     - Modified Add Audio/Video button functionality
+  - 13.03.2025 YouDownUI 1.3 (MD5 Checksum: 7e10313f35b76e133c609a11a7edd9c1 *YouDownUI.exe)
+    - Added the option to append the timestamp to the downloaded file (settings).
+    - Added the option to set the uploaded time as downloaded file modification time (settings).
 
 ## What is YouDownUI
 YouDownUI helps you easily, using mouse or keyboard-shortcuts, to download videos from online platforms.
