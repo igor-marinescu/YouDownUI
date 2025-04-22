@@ -11,6 +11,10 @@ Graphical User Interface for downloading online videos using 3rd party command l
   - 13.03.2025 YouDownUI 1.3 (MD5 Checksum: 7e10313f35b76e133c609a11a7edd9c1 *YouDownUI.exe)
     - Added the option to append the timestamp to the downloaded file (settings).
     - Added the option to set the uploaded time as downloaded file modification time (settings).
+  - 22.04.2025 YouDownUI 1.4 
+    - Added linux support 
+    
+`bin` **folder removed, soon Win and Linux releases will be published.**
 
 ## What is YouDownUI
 YouDownUI helps you easily, using mouse or keyboard-shortcuts, to download videos from online platforms.
