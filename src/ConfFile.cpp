@@ -128,7 +128,20 @@ ConfFile& ConfFile::operator=(const ConfFile& rhs){
 }
 
 //******************************************************************************
+ConfFile::ConfFile(QString filename){
+    
+    QByteArray ba = filename.toLocal8Bit();
+    read_config(ba.data());
+}
+
+//******************************************************************************
 ConfFile::ConfFile(const char * filename){
+    
+    read_config(filename);
+}
+    
+//******************************************************************************
+bool ConfFile::read_config(const char * filename){
 
     string line, category, name, value;
     ifstream ifstr(filename);
@@ -137,7 +150,7 @@ ConfFile::ConfFile(const char * filename){
 
     // Check if file is open
     if(!ifstr.is_open())
-        return;
+        return false;
 
     size_t pos1, pos2;
 
@@ -183,6 +196,7 @@ ConfFile::ConfFile(const char * filename){
 
         //cout << "cat='" << category << "' name='" << name << "' value='" << value << "'" << endl;
     }
+    return true;
 }
 
 //******************************************************************************

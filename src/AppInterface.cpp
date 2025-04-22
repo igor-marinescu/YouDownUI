@@ -27,6 +27,14 @@
 //******************************************************************************
 //
 //******************************************************************************
+AppInterface::AppInterface(QString filename, QWidget * mWindow) :
+    confFile(filename), mainWindow(mWindow){
+
+}
+
+//******************************************************************************
+//
+//******************************************************************************
 AppInterface::AppInterface(const char * filename, QWidget * mWindow) :
     confFile(filename), mainWindow(mWindow){
 

@@ -52,6 +52,7 @@ public:
 
     ConfFile confFile;
 
+    AppInterface(QString filename, QWidget * mWindow);
     AppInterface(const char * filename, QWidget * mWindow);
     ~AppInterface();
 

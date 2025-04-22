@@ -70,10 +70,16 @@ void Settings::on_buttonBox_accepted()
 //******************************************************************************
 void Settings::on_btnBrowseQueue_clicked()
 {
+#if (defined (_WIN32) || defined (_WIN64))
+    const char * dialog_filter = "Any File (*.*)";
+#else
+    const char * dialog_filter = "Any File (*)";
+#endif
+    
     QFileDialog dialog(this,
                         "Queue File",
                        settingsDataPtr->queueFileDir,
-                       "Any File (*.*)");
+                       dialog_filter);
 
     //dialog.setFileMode(QFileDialog::ExistingFile);
     dialog.setAcceptMode(QFileDialog::AcceptOpen);
@@ -103,10 +109,16 @@ void Settings::on_btnBrowseOutput_clicked()
 //******************************************************************************
 void Settings::on_btnDownloaderExe_clicked()
 {
+#if (defined (_WIN32) || defined (_WIN64))
+    const char * dialog_filter = "Exe File (*.exe)";
+#else
+    const char * dialog_filter = "Exe File (*)";
+#endif
+
     QFileDialog dialog(this,
                         "Executable File",
                        settingsDataPtr->downloaderExe,
-                       "Exe File (*.exe)");
+                       dialog_filter);
 
     dialog.setFileMode(QFileDialog::ExistingFile);
     dialog.setAcceptMode(QFileDialog::AcceptOpen);

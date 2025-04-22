@@ -15,8 +15,12 @@ TEMPLATE = app
 
 #DEFINES += DEBUGON
 
+# Add application name and version to defines
+DEFINES +="APP_MAME=\\\"YouDownUI\\\""
+DEFINES +="APP_VERS=\\\"1.4\\\""
+
 SOURCES += main.cpp\
-        mainwindow.cpp \
+    mainwindow.cpp \
     settings.cpp \
     ConfFile.cpp \
     AppInterface.cpp \

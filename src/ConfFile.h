@@ -74,8 +74,11 @@ public:
     ConfFile(const ConfFile& other);
     ConfFile& operator=(const ConfFile& other);
     ConfFile(const char * filename);
+    ConfFile(QString filename);
     virtual ~ConfFile();
 
+    bool read_config(const char * filename);
+    
     bool exists(const string & cat);
     bool exists(const string & cat, const string & name);
 

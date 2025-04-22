@@ -27,7 +27,6 @@
 
 #include "AppInterface.h"
 #include "settings.h"
-#include "add_edit.h"
 #include "yprocess.h"
 #include "logging.h"
 #include "queue.h"
@@ -35,8 +34,6 @@
 //******************************************************************************
 // Version
 //******************************************************************************
-#define APP_MAME "YouDownUI"
-#define APP_VERS "1.3"
 
 //******************************************************************************
 namespace Ui {

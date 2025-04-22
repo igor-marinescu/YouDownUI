@@ -34,7 +34,7 @@ YProcess::YProcess(QObject *parent) :
     flagBusy(false),
     output(nullptr){
 
-    parent = parent;
+    (void) parent;
 
     // Connect QProcess signals to local slots
     connect(this, SIGNAL(readyReadStandardOutput()),
@@ -97,7 +97,8 @@ void YProcess::logErrorOutput(){
 // Catch finished signal and notify UI
 //******************************************************************************
 void YProcess::logFinished(int exitCode, QProcess::ExitStatus exitStatus){
-    exitStatus = exitStatus;
+
+    (void) exitStatus;
 
     flagFinished = true;
     flagStarted = false;
