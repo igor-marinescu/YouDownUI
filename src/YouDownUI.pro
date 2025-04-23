@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     queue.cpp \
     add_edit.cpp \
     editlinetext.cpp \
-    yprocess.cpp
+    yprocess.cpp \
+    utils.cpp
 
 HEADERS  += mainwindow.h \
     settings.h \
@@ -38,7 +39,8 @@ HEADERS  += mainwindow.h \
     queue.h \
     add_edit.h \
     editlinetext.h \
-    yprocess.h
+    yprocess.h \
+    utils.h
 
 FORMS    += mainwindow.ui \
     settings.ui \

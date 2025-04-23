@@ -28,99 +28,7 @@
 #include "settings.h"
 #include "editlinetext.h"
 #include "add_edit.h"
-
-#if (defined (_WIN32) || defined (_WIN64))
-//******************************************************************************
-// Windows: "%APPDATA%\APP_NAME\"
-//******************************************************************************
-QString get_config_location_win(QString filename)
-{
-    QString config_dir_name;
-    char * ptr_str;
-    size_t len;
-    errno_t err = _dupenv_s(&ptr_str, &len, "appdata");
-    if(!err)
-    {
-        config_dir_name = QString(ptr_str) + QDir::separator() + QString(APP_MAME);
-        free(ptr_str);
-        
-        if(!QDir(config_dir_name).exists())
-        {
-            if(!QDir().mkdir(config_dir_name))
-            {
-                // Failed to create directory, store the settings along with the binary file.
-                return filename;
-            }
-        }
-        
-        // Directory exists (or successfully created), return file name
-        return (config_dir_name + QDir::separator() + filename);
-    }
-
-    // %APPDATA% not defined, the settings are stored along with the binary file.
-    return filename;
-}
-#endif
-
-//******************************************************************************
-// Linux: "$HOME/.config/APP_MAME/" or "$XDG_CONFIG_HOME/APP_NAME/"
-//          
-// `$XDG_CONFIG_HOME` defines the base directory relative to which user-specific 
-// configuration files should be stored. If `$XDG_CONFIG_HOME` is either not set 
-// or empty, a default equal to `$HOME/.config` should be used.
-//******************************************************************************
-#if (defined (LINUX) || defined (__linux__))
-QString get_config_location_linux(QString filename)
-{
-    QString config_dir_name;
-    char * ptr_str = getenv("XDG_CONFIG_HOME");
-    if(ptr_str)
-    {
-        config_dir_name = QString(ptr_str);
-    }
-    else{
-        ptr_str = getenv("HOME");
-        if(ptr_str)
-        {
-            config_dir_name = QString(ptr_str) + QDir::separator() + QString(".config");
-        }
-    }
-
-    // If $XDG_CONFIG_HOME or $HOME defined, check if settings directory 
-    // APP_MAME already exists, if not create it.
-    if(ptr_str)
-    {
-        config_dir_name += QDir::separator() + QString(APP_MAME);
-        if(!QDir(config_dir_name).exists())
-        {
-            if(!QDir().mkdir(config_dir_name))
-            {
-                // Failed to create directory, store the settings along with the binary file.
-                return filename;
-            }
-        }
-         
-        // Directory exists (or successfully created), return file name
-        return (config_dir_name + QDir::separator() + filename);
-    }
-
-    // If either $XDG_CONFIG_HOME or $HOME defined, the settings are stored 
-    // along with the binary file.
-    return filename;
-}
-#endif
-
-//******************************************************************************
-QString get_config_location(QString filename)
-{    
-#if (defined (_WIN32) || defined (_WIN64))
-    return get_config_location_win(filename);
-#elif (defined (LINUX) || defined (__linux__))
-    return get_config_location_linux(filename);
-#else
-    return filename;
-#endif
-}
+#include "utils.h"
 
 //******************************************************************************
 MainWindow::MainWindow(QWidget *parent) :
@@ -178,7 +86,7 @@ MainWindow::MainWindow(QWidget *parent) :
     elLastDownFlag = false;
 
     out("********************************************************************");
-    out("[Start] " + QString(APP_MAME) + " " + QString(APP_VERS) + " Built: " + QString(__DATE__) + " " + QString(__TIME__));
+    out(QString(APP_MAME) + " " + QString(APP_VERS) + " Built: " + QString(__DATE__) + " " + QString(__TIME__));
     out("********************************************************************");
 
     this->setWindowTitle(QString(APP_MAME) + " " + QString(APP_VERS));
