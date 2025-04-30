@@ -24,6 +24,7 @@
 #include "logging.h"
 #include <QDateTime>
 
+#ifdef LOGGING
 //******************************************************************************
 // Constructor
 //******************************************************************************
@@ -67,3 +68,4 @@ void Logging::out(const QString & txt)
         *ptrStream << strDateTime << " " << txt << "\n";
     }
 }
+#endif

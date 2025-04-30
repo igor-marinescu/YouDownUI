@@ -13,7 +13,7 @@ win32:RC_FILE = YouDownUI.rc
 TARGET = YouDownUI
 TEMPLATE = app
 
-#DEFINES += DEBUGON
+#DEFINES += LOGGING
 
 # Add application name and version to defines
 DEFINES +="APP_MAME=\\\"YouDownUI\\\""

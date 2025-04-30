@@ -28,7 +28,6 @@
 #include "AppInterface.h"
 #include "settings.h"
 #include "yprocess.h"
-#include "logging.h"
 #include "queue.h"
 
 //******************************************************************************
@@ -76,7 +75,6 @@ private:
 
     QString preProcessLink(QString strLink);
 
-    Logging log;
     Queue queue;
 
     // Last downloaded element

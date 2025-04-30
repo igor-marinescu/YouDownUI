@@ -29,6 +29,7 @@
 #include "editlinetext.h"
 #include "add_edit.h"
 #include "utils.h"
+#include "logging.h"
 
 //******************************************************************************
 MainWindow::MainWindow(QWidget *parent) :
@@ -78,10 +79,13 @@ MainWindow::MainWindow(QWidget *parent) :
     p.setColor(QPalette::Text, Qt::green);
     ui->out->setPalette(p); // change textedit palette
 
-    // Queue
+    // Queue (if queue file location not specified, use the settings/config directory)
     queue.assignTab(ui->tableWidget);
     queue.resizeTab(width());
-    queue.load(settingsData.queueFileDir);
+    if(!settingsData.queueFileDir.isEmpty())
+        queue.load(settingsData.queueFileDir);
+    else
+        queue.load(get_config_location(QString("queue.txt")));
 
     elLastDownFlag = false;
 
@@ -95,7 +99,11 @@ MainWindow::MainWindow(QWidget *parent) :
 //******************************************************************************
 MainWindow::~MainWindow()
 {
-    queue.save(settingsData.queueFileDir);
+    // Queue (if queue file location not specified, use the settings/config directory)
+    if(!settingsData.queueFileDir.isEmpty())
+        queue.save(settingsData.queueFileDir);
+    else
+        queue.save(get_config_location(QString("queue.txt")));
     queue.releaseTab();
 
     // Save settings
@@ -155,7 +163,7 @@ void MainWindow::enableElements(bool state)
 void MainWindow::out(const QString & txt)
 {
     ui->out->append(txt);
-    log.out(txt);
+    LOG_OUT(txt);
 }
 
 //******************************************************************************

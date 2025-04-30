@@ -30,18 +30,36 @@
 //******************************************************************************
 // Includes
 //******************************************************************************
+#ifdef LOGGING
 class Logging {
 
     QFile * ptrFile;
     QTextStream * ptrStream;
 
-public:
-
     Logging();
+    Logging(Logging const &);           // don't implement
+    
     ~Logging();
 
+    void operator=(Logging const &);    // don't implement
+    
+public:
+
     void out(const QString & cmd);
+    
+    static Logging & getInstance()
+    {
+        static Logging instance;
+        return instance;
+    }    
 };
+#endif
+
+#ifdef LOGGING
+    #define LOG_OUT(qstr)   Logging::getInstance().out(qstr)
+#else
+    #define LOG_OUT(qstr)
+#endif
 
 //******************************************************************************
 #endif // LOGGING_H
